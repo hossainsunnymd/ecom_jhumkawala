@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import { usePage,router,Link } from "@inertiajs/vue3";
 
 import { useToast } from "vue-toast-notification";
+import { computed } from "vue";
 
 const toast = useToast({
     position: "top-right",
@@ -13,6 +14,7 @@ const toast = useToast({
 });
 
 const page = usePage();
+const category=computed(()=>new URLSearchParams(window.location.search).get("category"));
 
 function imageInArrayImages(details, image) {
     if (details) {
@@ -43,6 +45,10 @@ const addToCart = (productId) => {
 </script>
 
 <template>
+   <div class="mb-3 mb-xl-5 pt-1 pb-4">
+       <h4>Shop <span v-if="category" class="text-primary">/ {{ category }}</span></h4>
+   </div>
+
     <div class="row row-cols-2 row-cols-md-3" id="products-grid">
         <div
             v-for="product in page.props.products"

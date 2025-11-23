@@ -42,7 +42,7 @@ const page = usePage();
                 :loop="true"
                 navigation
                 :pagination="{ clickable: true }"
-                :autoplay="{ delay: 5000 }"
+                :autoplay="{ delay: 3000 }"
                 :breakpoints="{
                     320: {
                         slidesPerView: 2,
@@ -69,19 +69,23 @@ const page = usePage();
                 <SwiperSlide
                     v-for="(cat, index) in page.props.categories"
                     :key="index"
+                    style="cursor: pointer"
                 >
-                    <img
-                        loading="lazy"
-                        class="mb-3"
-                        :src="cat.image"
-                        width="124"
-                        height="124"
-                        alt="Category Image"
-                        style="border-radius: 100%"
-                    />
-                    <div class="text-start" style="margin-left: 2.5rem">
-                        <Link href="#"> {{ cat.name }}</Link>
-                    </div>
+                    <Link :href="`/shop?category=${cat.slug}`">
+                        <img
+                            loading="lazy"
+                            class="mb-3"
+                            :src="cat.image"
+                            width="124"
+                            height="124"
+                            alt="Category Image"
+                            style="border-radius: 100%"
+                        />
+
+                        <div class="text-start" style="margin-left: 2.5rem">
+                            {{ cat.name }}
+                        </div>
+                    </Link>
                 </SwiperSlide>
             </Swiper>
         </div>

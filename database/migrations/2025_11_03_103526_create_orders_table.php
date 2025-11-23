@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->decimal('discount', 13, 2)->nullable()->default(0);
             $table->decimal('shipping_charge', 13, 2)->nullable()->default(0);
             $table->decimal('total', 13, 2);
-            $table->enum('order_status',['pending','confirmed','processing','shipped','delivered'])->default('pending');
+            $table->enum('order_status',['pending','confirmed','processing','shipped','delivered','cancelled'])->default('pending');
             $table->enum('payment_method',['cod','bkash'])->default('cod');
             $table->enum('payment_status',['pending','cancel','success'])->default('pending');
             $table->timestamp('order_date')->useCurrent();

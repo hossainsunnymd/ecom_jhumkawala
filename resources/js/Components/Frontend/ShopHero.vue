@@ -51,23 +51,25 @@ const slides = [
 </script>
 
 <template>
-  <div class="">
+  <div>
     <Swiper v-bind="swiperOptions" class="slideshow slideshow_small slideshow_split">
       <SwiperSlide v-for="slide in slides" :key="slide.id">
         <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
           <div
             class="slide-split_text position-relative d-flex align-items-center"
-            :style="{ backgroundColor: slide.bgColor }"
+            style="background-color: #183D3D"
           >
             <div class="slideshow-text container p-3 p-xl-5">
               <h2
                 class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2"
+                style="color: #93B1A6;"
               >
                 {{ slide.title1 }} <br />
                 <strong>{{ slide.title2 }}</strong>
               </h2>
               <p
                 class="mb-0 animate animate_fade animate_btt animate_delay-5"
+                style="color: #5C8374;"
               >
                 {{ slide.description }}
               </p>

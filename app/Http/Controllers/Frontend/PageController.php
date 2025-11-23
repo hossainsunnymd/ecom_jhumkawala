@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductVariant;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class PageController extends Controller
 {
@@ -50,7 +51,7 @@ class PageController extends Controller
 
         $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->with('details:id,product_id,image1')->latest()->get()->map(function ($product) {
             $product->image = $product->getFirstMediaUrl('products');
-            if($product->details){
+            if ($product->details) {
                 $product->details->image1 = $product->details->getFirstMediaUrl('product_details1') ?? null;
             }
             return $product;
@@ -92,12 +93,12 @@ class PageController extends Controller
             return $product;
         });
 
-        $sliders=Slider::get()->map(function($slider){
-            $slider->image=$slider->getFirstMediaUrl('sliders');
+        $sliders = Slider::get()->map(function ($slider) {
+            $slider->image = $slider->getFirstMediaUrl('sliders');
             return $slider;
         });
 
-        return Inertia::render('Frontend/Home', compact('categories', 'flashSales', 'featuredProducts','sliders'));
+        return Inertia::render('Frontend/Home', compact('categories', 'flashSales', 'featuredProducts', 'sliders'));
     }
 
     public function login()
@@ -125,21 +126,26 @@ class PageController extends Controller
         return Inertia::render('Frontend/Profile');
     }
 
-    public function shop()
+    public function shop(Request $request)
     {
-        $products = Product::with('category', 'details')->latest()->get()->map(function ($product) {
-            $product->image = $product->getFirstMediaUrl('products');
-            if ($product->details) {
+        $category = $request->category ?? null;
+        $categoryId = Category::where('slug', $category)->first()->id ?? null;
 
-                $product->details->image1 = $product->details->getFirstMediaUrl('product_details1') ?? null;
-                $product->details->image2 = $product->details->getFirstMediaUrl('product_details2') ?? null;
-                $product->details->image3 = $product->details->getFirstMediaUrl('product_details3') ?? null;
-                $product->details->image4 = $product->details->getFirstMediaUrl('product_details4') ?? null;
+        $products = Product::with('category', 'details')
+            ->when($categoryId, fn($q, $categoryId) => $q->where('category_id', $categoryId))
+            ->latest()->get()->map(function ($product) {
+                $product->image = $product->getFirstMediaUrl('products');
+                if ($product->details) {
 
+                    $product->details->image1 = $product->details->getFirstMediaUrl('product_details1') ?? null;
+                    $product->details->image2 = $product->details->getFirstMediaUrl('product_details2') ?? null;
+                    $product->details->image3 = $product->details->getFirstMediaUrl('product_details3') ?? null;
+                    $product->details->image4 = $product->details->getFirstMediaUrl('product_details4') ?? null;
+
+                    return $product;
+                }
                 return $product;
-            }
-            return $product;
-        });
+            });
 
         $categories = Category::orderBy('name')->get();
         $brands = Brand::orderBy('name')->get();
@@ -151,8 +157,4 @@ class PageController extends Controller
         return Inertia::render('Frontend/TermsAndCondition');
     }
 
-    public function wishList()
-    {
-        return Inertia::render('Frontend/WishList');
-    }
 }

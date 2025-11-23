@@ -33,17 +33,31 @@ const addToCart = (productId) => {
         }
     );
 };
-
-console.log(page.props.featuredProducts);
 </script>
 
 <template>
     <section class="products-grid container">
-        <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">
-            Featured Products
-        </h2>
+        <div
+            class="d-flex align-items-center p-2"
+            style="background-color: #1b2b28"
+        >
+            <div class="flex-grow-1" style="color: #fff">
+                <hr />
+            </div>
 
-        <div class="row">
+            <h2
+                class="section-title text-center px-3 m-0"
+                style="color: #ffbd0a"
+            >
+               সেরা বাছাই
+            </h2>
+
+            <div class="flex-grow-1" style="color: #fff">
+                <hr />
+            </div>
+        </div>
+
+        <div class="row pt-4">
             <div class="col-md-6 col-lg-8 col-xl-80per">
                 <Swiper
                     :modules="[Autoplay]"

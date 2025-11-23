@@ -62,6 +62,7 @@ Route::group(['prefix' => 'admin', 'middleware' =>['auth', 'admin']], function (
     //orders
     Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
     Route::get('/order/{order}/details', [OrderController::class, 'orderDetails'])->name('order.details');
+    Route::get('/order/{order}/edit', [OrderController::class, 'edit'])->name('order.edit');
 
     //sliders
     Route::get('/sliders', [SliderController::class, 'index'])->name('slider.index');

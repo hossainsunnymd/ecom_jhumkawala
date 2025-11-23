@@ -1,10 +1,7 @@
 <script setup>
-import { Link,usePage } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 
-const page=usePage();
-
-console.log(page.props.orders);
-
+const page = usePage();
 </script>
 
 <template>
@@ -66,36 +63,64 @@ console.log(page.props.orders);
                                     <th class="text-center">Subtotal</th>
                                     <th class="text-center">Tax</th>
                                     <th class="text-center">Total</th>
-
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Order Date</th>
                                     <th class="text-center">Total Items</th>
                                     <th class="text-center">Delivered On</th>
-                                    <th></th>
+                                    <th class="text-center">Cancelled On</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="order in page.props.orders" :key="order.id">
+                                <tr
+                                    v-for="order in page.props.orders"
+                                    :key="order.id"
+                                >
                                     <td class="text-center">{{ order.id }}</td>
-                                    <td class="text-center">{{ order.user.name }}</td>
-                                    <td class="text-center">{{ order.user.phone }}</td>
-                                    <td class="text-center">{{ order.subtotal }}</td>
+                                    <td class="text-center">
+                                        {{ order.user.name }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ order.user.phone }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ order.subtotal }}
+                                    </td>
                                     <td class="text-center">{{ order.tax }}</td>
-                                    <td class="text-center">{{ order.total }}</td>
+                                    <td class="text-center">
+                                        {{ order.total }}
+                                    </td>
 
                                     <td class="text-center">ordered</td>
                                     <td class="text-center">
                                         2024-07-11 00:54:14
                                     </td>
-                                    <td class="text-center">{{ order.order_items.length }}</td>
+                                    <td class="text-center">
+                                        {{ order.order_items.length }}
+                                    </td>
+                                    <td></td>
                                     <td></td>
                                     <td class="text-center">
-                                        <Link :href="`/admin/order/${order.id}/details`">
+                                        <Link
+                                            :href="`/admin/order/${order.id}/details`"
+                                        >
                                             <div
                                                 class="list-icon-function view-icon"
                                             >
                                                 <div class="item eye">
                                                     <i class="icon-eye"></i>
+                                                </div>
+                                            </div>
+                                        </Link>
+
+                                        <Link
+                                            :href="`/admin/order/${order.id}/edit`"
+                                        >
+                                            <div
+                                                class="list-icon-function view-icon"
+                                            >
+                                                <div class="item eye">
+                                                    <i class="icon-edit-3"></i>
                                                 </div>
                                             </div>
                                         </Link>

@@ -4,25 +4,20 @@ import SiteFooter from "../../Components/Frontend/SiteFooter.vue";
 import SiteHeader from "../../Components/Frontend/SiteHeader.vue";
 
 import { ref } from "vue";
-import { usePage } from "@inertiajs/vue3";
+import { usePage,Link } from "@inertiajs/vue3";
 
 const page = usePage();
 
 // Accordion states
 const categoryList = ref(false);
-const colorList = ref(false);
-const sizeList = ref(false);
 const brandList = ref(false);
-const priceList = ref(false);
+
 
 // Toggle function
 const toggleAccordion = (section) => {
   switch (section) {
     case 'category': categoryList.value = !categoryList.value; break;
-    case 'color': colorList.value = !colorList.value; break;
-    case 'size': sizeList.value = !sizeList.value; break;
     case 'brand': brandList.value = !brandList.value; break;
-    case 'price': priceList.value = !priceList.value; break;
   }
 };
 
@@ -44,7 +39,7 @@ const toggleAccordion = (section) => {
                 type="button"
                 @click="toggleAccordion('category')"
               >
-                Product Categories
+                Product Category
                 <svg
                   class="accordion-button__icon"
                   :class="{ 'rotate-180': categoryList }"
@@ -63,7 +58,7 @@ const toggleAccordion = (section) => {
             <div v-show="categoryList" class="accordion-collapse collapse show border-0">
               <div class="accordion-body px-0 pb-0 pt-3">
                 <ul class="list list-inline mb-0">
-                  <li v-for="category in page.props.categories" :key="category.id" class="list-item"><a href="#" class="menu-link py-1">{{ category.name }}</a></li>
+                  <li v-for="category in page.props.categories" :key="category.id" class="list-item"><Link :href="`/shop?category=${ category.slug }`" class="menu-link py-1">{{ category.name }}</Link></li>
                 </ul>
               </div>
             </div>
@@ -80,7 +75,7 @@ const toggleAccordion = (section) => {
                 type="button"
                 @click="toggleAccordion('brand')"
               >
-                Brands
+                Brand
                 <svg
                   class="accordion-button__icon"
                   :class="{ 'rotate-180': brandList }"

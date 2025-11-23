@@ -18,10 +18,10 @@ import FlashSales from "../../Components/Frontend/FlashSales.vue";
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
             <CategoryCarousel />
 
-            <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+            <!-- <div class="mb-3 mb-xl-5 pt-1 pb-4"></div> -->
             <FlashSales />
 
-            <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+            <!-- <div class="mb-3 mb-xl-5 pt-1 pb-4"></div> -->
 
             <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
             <FeaturedProducts />
