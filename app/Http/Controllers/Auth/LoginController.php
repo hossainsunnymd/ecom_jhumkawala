@@ -22,7 +22,7 @@ class LoginController extends Controller
             if(Auth::attempt($request->only('phone', 'password'))){
                 return redirect()->back()->with(['status' => true, 'message' => 'Login successful']);
             }
-            return redirect()->back()->with(['status' => false, 'message' => 'Login failed']);
+            return redirect()->back()->with(['status' => false, 'message' => 'Invalid credentials']);
         }catch(Exception $e){
             return redirect()->back()->with(['status' => false, 'message' => $e->getMessage()]);
         }

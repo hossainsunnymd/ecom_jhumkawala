@@ -63,6 +63,8 @@ const page = usePage();
                                     <th class="text-center">Subtotal</th>
                                     <th class="text-center">Tax</th>
                                     <th class="text-center">Total</th>
+                                    <th class="text-center">Payment Method</th>
+                                    <th class="text-center">Payment Status</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Order Date</th>
                                     <th class="text-center">Total Items</th>
@@ -91,15 +93,25 @@ const page = usePage();
                                         {{ order.total }}
                                     </td>
 
-                                    <td class="text-center">ordered</td>
+                                    <td class="text-center">
+                                        {{ order.payment_method }}
+                                    </td>
+
+                                    <td class="text-center">
+                                        {{ order.payment_status }}
+                                    </td>
+
+                                    <td class="text-center">
+                                        {{ order.order_status }}
+                                    </td>
                                     <td class="text-center">
                                         2024-07-11 00:54:14
                                     </td>
                                     <td class="text-center">
                                         {{ order.order_items.length }}
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ order.delivery_date }}</td>
+                                    <td>{{ order.cancel_date }}</td>
                                     <td class="text-center">
                                         <Link
                                             :href="`/admin/order/${order.id}/details`"

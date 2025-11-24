@@ -339,8 +339,8 @@ const closeNavDropdown = () => {
                 </a>
             </div>
 
-            <a
-                href="#"
+            <Link
+                href="/customer/carts"
                 class="header-tools__item header-tools__cart js-open-aside"
                 data-aside="cartDrawer"
             >
@@ -358,7 +358,7 @@ const closeNavDropdown = () => {
                     class="cart-amount d-block position-absolute js-cart-items-count"
                     >{{ page.props.totalcarts }}</span
                 >
-            </a>
+            </Link>
         </div>
 
         <nav
@@ -701,7 +701,7 @@ const closeNavDropdown = () => {
                         </a>
                     </div>
 
-                    <a href="wishlist.html" class="header-tools__item">
+                    <Link href="/customer/wishlist" class="header-tools__item">
                         <svg
                             width="20"
                             height="20"
@@ -711,7 +711,7 @@ const closeNavDropdown = () => {
                         >
                             <use href="#icon_heart" />
                         </svg>
-                    </a>
+                    </Link>
 
                     <Link
                         href="/customer/carts"

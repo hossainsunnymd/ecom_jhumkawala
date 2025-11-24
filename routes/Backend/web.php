@@ -63,6 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' =>['auth', 'admin']], function (
     Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
     Route::get('/order/{order}/details', [OrderController::class, 'orderDetails'])->name('order.details');
     Route::get('/order/{order}/edit', [OrderController::class, 'edit'])->name('order.edit');
+    Route::post('/order/{order}/update', [OrderController::class, 'update'])->name('order.update');
 
     //sliders
     Route::get('/sliders', [SliderController::class, 'index'])->name('slider.index');

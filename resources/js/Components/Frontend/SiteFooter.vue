@@ -193,7 +193,7 @@ onBeforeUnmount(() => {
                             :key="category.id"
                             class="sub-menu__item"
                         >
-                            <Link href="#" class="menu-link menu-link_us-s">{{
+                            <Link :href="`/shop?category=${category.slug}`" class="menu-link menu-link_us-s">{{
                                 category.name
                             }}</Link>
                         </li>

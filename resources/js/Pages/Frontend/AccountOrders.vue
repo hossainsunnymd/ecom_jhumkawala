@@ -31,6 +31,7 @@ const page = usePage();
                                 <th class="text-center">Order Date</th>
                                 <th class="text-center">Items</th>
                                 <th class="text-center">Delivered On</th>
+                                <th class="text-center">Cancelled On</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -44,13 +45,14 @@ const page = usePage();
                                 <td class="text-center">{{ order.total }}</td>
 
                                 <td class="text-center">
-                                    <span class="badge bg-danger"
-                                        >Canceled</span
+                                    <span class=""
+                                        >{{ order.order_status }}</span
                                     >
                                 </td>
                                 <td class="text-center">{{ new Date(order.created_at).toLocaleString('en-GB') }}</td>
                                 <td class="text-center">2</td>
-                                <td>2024-07-07</td>
+                                <td>{{ order.delivery_date }}</td>
+                                <td>{{ order.cancel_date }}</td>
                                 <td class="text-center">
                                     <Link :href="`/customer/order/${order.id}/details`">
                                         <div

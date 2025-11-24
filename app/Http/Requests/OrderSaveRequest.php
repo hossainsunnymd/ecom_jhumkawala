@@ -22,7 +22,18 @@ class OrderSaveRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'order_no' => 'required',
+            'name' => 'required|string',
+            'phone' => 'required|string|min:11|max:11',
+            'subtotal' => 'required|numeric',
+            'total' => 'required|numeric',
+            'tax' => 'required|numeric',
+            'order_status' => 'required|string',
+            'order_date' => 'required|string',
+            'total_items' => 'required|numeric',
+            'delivered_on'=>'nullable|string',
+            'cancelled_on'=>'nullable|string',
+
         ];
     }
 }

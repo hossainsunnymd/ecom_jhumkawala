@@ -18,22 +18,24 @@ const form = useForm({
     subtotal: page.props.order.subtotal,
     tax: page.props.order.tax,
     total: page.props.order.total,
-    status: page.props.order.status,
+    payment_method: page.props.order.payment_method,
+    payment_status: page.props.order.payment_status,
+    order_status: page.props.order.order_status,
     order_date: page.props.order.order_date,
     total_items: page.props.order.order_items.length,
     delivered_on: page.props.order.delivery_date,
-    canceled_on: page.props.order.cancel_date,
+    cancelled_on: page.props.order.cancel_date,
 });
 
-const url = `/admin/order/${page.props.order.id}/edit`;
-
+const url = `/admin/order/${page.props.order.id}/update`;
+console.log(page.props.order);
 function submit() {
     form.post(url, {
         preserveScroll: true,
         onSuccess: () => {
             if (page.props.flash.status == true) {
                 toaster.success(page.props.flash.message);
-                router.get("/admin/brands");
+                router.get("/admin/orders");
             } else if (page.props.flash.status == false) {
                 toaster.error(page.props.flash.message);
             }
@@ -56,7 +58,6 @@ function submit() {
                     @submit.prevent="submit"
                     class="form-new-product form-style-1T"
                 >
-
                     <fieldset class="name mb-20">
                         <div class="body-title">
                             Order No <span class="tf-color-1">*</span>
@@ -88,6 +89,20 @@ function submit() {
                     <fieldset class="name mb-20">
                         <div class="body-title">
                             Phone <span class="tf-color-1">*</span>
+                        </div>
+                        <input
+                            v-model="form.phone"
+                            type="text"
+                            placeholder="phone"
+                        />
+                        <span v-if="errors.phone" class="text-danger fs-3">{{
+                            errors.phone[0]
+                        }}</span>
+                    </fieldset>
+
+                    <fieldset class="name mb-20">
+                        <div class="body-title">
+                            Subtotal <span class="tf-color-1">*</span>
                         </div>
                         <input
                             v-model="form.subtotal"
@@ -131,7 +146,7 @@ function submit() {
                         <div class="body-title">
                             Status <span class="tf-color-1">*</span>
                         </div>
-                        <select v-model="form.status" name="status" id="status">
+                        <select v-model="form.order_status">
                             <option value="pending">Pending</option>
                             <option value="confirmed">Confirmed</option>
                             <option value="processing">Processing</option>
@@ -139,9 +154,41 @@ function submit() {
                             <option value="delivered">Delivered</option>
                             <option value="cancelled">Cancelled</option>
                         </select>
-                        <span v-if="errors.status" class="text-danger fs-3">{{
-                            errors.status[0]
-                        }}</span>
+                        <span
+                            v-if="errors.order_status"
+                            class="text-danger fs-3"
+                            >{{ errors.order_status[0] }}</span
+                        >
+                    </fieldset>
+                    <fieldset class="name mb-20">
+                        <div class="body-title">
+                           Payment Status <span class="tf-color-1">*</span>
+                        </div>
+                        <select v-model="form.payment_status">
+                            <option value="pending">Pending</option>
+                            <option value="cancel">Cancel</option>
+                            <option value="success">Success</option>
+                        </select>
+                        <span
+                            v-if="errors.payment_status"
+                            class="text-danger fs-3"
+                            >{{ errors.payment_status[0] }}</span
+                        >
+                    </fieldset>
+
+                    <fieldset class="name mb-20">
+                        <div class="body-title">
+                            Payment Method <span class="tf-color-1">*</span>
+                        </div>
+                        <select v-model="form.payment_method">
+                            <option value="cod">Cod</option>
+                            <option value="bkash">Bkash</option>
+                        </select>
+                        <span
+                            v-if="errors.payment_method"
+                            class="text-danger fs-3"
+                            >{{ errors.payment_method[0] }}</span
+                        >
                     </fieldset>
 
                     <fieldset class="name mb-20">
@@ -194,17 +241,17 @@ function submit() {
 
                     <fieldset class="name mb-20">
                         <div class="body-title">
-                            Cancled No <span class="tf-color-1">*</span>
+                            Cancelled No <span class="tf-color-1">*</span>
                         </div>
                         <input
-                            v-model="form.cancelled_no"
+                            v-model="form.cancelled_on"
                             type="text"
-                            placeholder="cancled no"
+                            placeholder="cancelled no"
                         />
                         <span
-                            v-if="errors.cancelled_no"
+                            v-if="errors.cancelled_on"
                             class="text-danger fs-3"
-                            >{{ errors.cancelled_no[0] }}</span
+                            >{{ errors.cancelled_on[0] }}</span
                         >
                     </fieldset>
 

@@ -32,25 +32,13 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/account-address', [PageController::class, 'accountAddress'])->name('account.address');
-Route::get('/account-address-add', [PageController::class, 'accountAddressAdd'])->name('account.address.add');
-Route::get('/account-details', [PageController::class, 'accountDetails'])->name('account.details');
-Route::get('/account-orders', [PageController::class, 'accountOrders'])->name('account.orders');
-Route::get('/account-orders-details', [PageController::class, 'accountOrdersDetails'])->name('account.orders.details');
-Route::get('/account-review', [PageController::class, 'accountReview'])->name('account.review');
-Route::get('/account-wishlist', [PageController::class, 'accountWishList'])->name('account.wishlist');
-Route::get('/cart', [PageController::class, 'cart'])->name('cart');
-Route::get('/checkout', [PageController::class, 'checkout'])->name('checkout');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/product/{slug}', [PageController::class, 'productDetails'])->name('product.details');
-Route::get('/login', [PageController::class, 'login'])->name('login');
-Route::get('/register', [PageController::class, 'register'])->name('register');
 Route::get('/order-confirmation', [PageController::class, 'OrderConfirmation'])->name('order.confirmation');
 Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy.policy');
-Route::get('/profile', [PageController::class, 'profile'])->name('profile');
 Route::get('/shop', [PageController::class, 'shop'])->name('shop');
 Route::get('/terms-and-condition', [PageController::class, 'termsAndCondition'])->name('terms.and.condition');
-Route::get('/wish-list', [PageController::class, 'wishList'])->name('wish.list');
+
 
 
 Route::group(['prefix' => 'customer', 'middleware' => 'auth'], function () {

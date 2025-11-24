@@ -16,6 +16,9 @@ class Order extends Model
         'order_datetime',
         'payment_method',
         'payment_status',
+        'order_status',
+        'cancel_date',
+        'delivery_date'
     ];
 
     public function orderItems(){

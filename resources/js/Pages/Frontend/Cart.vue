@@ -21,7 +21,7 @@ if(page.props.flash.status==true){
 <template>
     <SiteHeader />
 
-    <main class="pt-70">
+    <main class="pt-70 main-container">
         <div class="mb-4 pb-4"></div>
         <section class="shop-checkout container">
             <h2 class="page-title">Cart</h2>
@@ -201,4 +201,10 @@ if(page.props.flash.status==true){
     <SiteFooter />
 </template>
 
-<style scoped></style>
+<style scoped>
+@media (max-width: 768px) {
+.main-container{
+    padding-top: 20px;
+}
+}
+</style>
