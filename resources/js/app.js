@@ -15,4 +15,6 @@ createInertiaApp({
       .use(plugin)
       .mount(el)
   },
+  scroll:true,
+  preserveScroll: false,
 })

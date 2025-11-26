@@ -4,17 +4,18 @@ import SiteHeader from "../../Components/Frontend/SiteHeader.vue";
 import { useToast } from "vue-toast-notification";
 
 import { Link, useForm, usePage, router } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const toaster = useToast({
     position: "top-right",
     duration: 3000,
 });
 
+const page = usePage();
 const errors = computed(() => page.props.flash.errors || {});
 
-const page = usePage();
 const form = useForm({
+    country_code: "+880",
     phone: "",
     password: "",
 });
@@ -32,6 +33,50 @@ const submit = () => {
         },
     });
 };
+
+const countries = ref([]);
+const selectedFlag = ref();
+const dropdownOpen = ref(false);
+
+onMounted(async () => {
+    try {
+        const res = await axios.get(
+            "https://restcountries.com/v3.1/all?fields=name,idd,flags"
+        );
+
+        countries.value = res.data
+            .filter((c) => c.idd && c.idd.root && c.idd.suffixes)
+            .map((c) => ({
+                name: c.name.common,
+                code: c.idd.root + c.idd.suffixes[0],
+                flag: c.flags.png,
+            }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        const defaultCountry = countries.value.find(
+            (c) => c.code === form.country_code
+        );
+        if (defaultCountry) selectedFlag.value = defaultCountry.flag;
+    } catch (err) {
+        console.error("Failed to fetch countries:", err);
+    }
+});
+
+// select country
+function selectCountry(c) {
+    form.country_code = c.code;
+    selectedFlag.value = c.flag;
+    dropdownOpen.value = false;
+}
+
+// close dropdown on outside click
+function handleClickOutside(event) {
+    if (!event.target.closest(".custom-dropdown")) {
+        dropdownOpen.value = false;
+    }
+}
+
+document.addEventListener("click", handleClickOutside);
 </script>
 
 <template>
@@ -67,21 +112,71 @@ const submit = () => {
                             name="login-form"
                             class="needs-validation"
                         >
-                            <div class="form-floating mb-3">
-                                <input
-                                    v-model="form.phone"
-                                    class="form-control form-control_gray"
-                                    name="email"
-                                    autocomplete="email"
-                                    autofocus=""
-                                />
-                                <label for="phone">Mobile *</label>
+
+                            <div class="mb-3">
+                                <label class="form-label">Mobile *</label>
+                                <div class="input-group">
+                                    <div
+                                        class="custom-dropdown position-relative me-2"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn form-control d-flex align-items-center btn-sm"
+                                            @click.stop="
+                                                dropdownOpen = !dropdownOpen
+                                            "
+                                        >
+                                            <img
+                                                :src="selectedFlag"
+                                                width="20"
+                                                class="me-1"
+                                            />
+                                            {{ form.country_code }}
+                                            <span class="ms-1">&#9662;</span>
+                                        </button>
+
+                                        <ul
+                                            v-if="dropdownOpen"
+                                            class="dropdown-menu show position-absolute"
+                                            style="
+                                                max-height: 200px;
+                                                overflow-y: auto;
+                                            "
+                                        >
+                                            <li
+                                                v-for="c in countries"
+                                                :key="c.code"
+                                            >
+                                                <a
+                                                    href="javascript:void(0)"
+                                                    class="dropdown-item d-flex align-items-center"
+                                                    @click.prevent="
+                                                        selectCountry(c)
+                                                    "
+                                                >
+                                                    <img
+                                                        :src="c.flag"
+                                                        width="20"
+                                                        class="me-2"
+                                                    />
+                                                    {{ c.code }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <input
+                                        v-model="form.phone"
+                                        class="form-control"
+                                        placeholder="Enter phone number"
+                                    />
+                                </div>
+                                <div v-if="errors.phone" class="pb-3 text-red">
+                                    {{ errors.phone[0] }}
+                                </div>
                             </div>
 
-                            <div v-if="errors.phone" class="pb-3 text-red">
-                                {{ errors.phone[0] }}
-                            </div>
-
+                            <!-- Password -->
                             <div class="form-floating mb-3">
                                 <input
                                     v-model="form.password"
@@ -98,6 +193,7 @@ const submit = () => {
                             <div v-if="errors.password" class="pb-3 text-red">
                                 {{ errors.password[0] }}
                             </div>
+
                             <button
                                 class="btn btn-primary w-100 text-uppercase"
                                 type="submit"
@@ -131,4 +227,7 @@ const submit = () => {
     <SiteFooter />
 </template>
 
-<style scoped></style>
+<style scoped>
+
+
+</style>
