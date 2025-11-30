@@ -5,6 +5,7 @@ import { useToast } from "vue-toast-notification";
 
 import { Link, useForm, usePage, router } from "@inertiajs/vue3";
 import { computed, onMounted, ref } from "vue";
+import axios from "axios";
 
 const toaster = useToast({
     position: "top-right",
@@ -35,39 +36,15 @@ const submit = () => {
 };
 
 const countries = ref([]);
-const selectedFlag = ref();
-const dropdownOpen = ref(false);
 
 onMounted(async () => {
     try {
-        const res = await axios.get(
-            "https://restcountries.com/v3.1/all?fields=name,idd,flags"
-        );
-
-        countries.value = res.data
-            .filter((c) => c.idd && c.idd.root && c.idd.suffixes)
-            .map((c) => ({
-                name: c.name.common,
-                code: c.idd.root + c.idd.suffixes[0],
-                flag: c.flags.png,
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name));
-
-        const defaultCountry = countries.value.find(
-            (c) => c.code === form.country_code
-        );
-        if (defaultCountry) selectedFlag.value = defaultCountry.flag;
+        const res = await axios.get("api/frontend/countries");
+        countries.value = res.data.data;
     } catch (err) {
         console.error("Failed to fetch countries:", err);
     }
 });
-
-// select country
-function selectCountry(c) {
-    form.country_code = c.code;
-    selectedFlag.value = c.flag;
-    dropdownOpen.value = false;
-}
 
 // close dropdown on outside click
 function handleClickOutside(event) {
@@ -112,66 +89,41 @@ document.addEventListener("click", handleClickOutside);
                             name="login-form"
                             class="needs-validation"
                         >
-
                             <div class="mb-3">
                                 <label class="form-label">Mobile *</label>
+
                                 <div class="input-group">
-                                    <div
-                                        class="custom-dropdown position-relative me-2"
+                                    <!-- Country Select -->
+                                    <select
+                                        v-model="form.country_code"
+                                        class="form-select"
+                                        style="
+                                            max-width: 130px;
+                                            font-size: 14px;
+                                        "
                                     >
-                                        <button
-                                            type="button"
-                                            class="btn form-control d-flex align-items-center btn-sm"
-                                            @click.stop="
-                                                dropdownOpen = !dropdownOpen
-                                            "
+                                        <option
+                                            v-for="c in countries"
+                                            :key="c.id"
+                                            :value="'+' + c.phonecode"
                                         >
-                                            <img
-                                                :src="selectedFlag"
-                                                width="20"
-                                                class="me-1"
-                                            />
-                                            {{ form.country_code }}
-                                            <span class="ms-1">&#9662;</span>
-                                        </button>
+                                            {{ c.emoji }} +{{ c.phonecode }}
+                                        </option>
+                                    </select>
 
-                                        <ul
-                                            v-if="dropdownOpen"
-                                            class="dropdown-menu show position-absolute"
-                                            style="
-                                                max-height: 200px;
-                                                overflow-y: auto;
-                                            "
-                                        >
-                                            <li
-                                                v-for="c in countries"
-                                                :key="c.code"
-                                            >
-                                                <a
-                                                    href="javascript:void(0)"
-                                                    class="dropdown-item d-flex align-items-center"
-                                                    @click.prevent="
-                                                        selectCountry(c)
-                                                    "
-                                                >
-                                                    <img
-                                                        :src="c.flag"
-                                                        width="20"
-                                                        class="me-2"
-                                                    />
-                                                    {{ c.code }}
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
+                                    <!-- Phone Input -->
                                     <input
                                         v-model="form.phone"
+                                        type="text"
                                         class="form-control"
                                         placeholder="Enter phone number"
                                     />
                                 </div>
-                                <div v-if="errors.phone" class="pb-3 text-red">
+
+                                <div
+                                    v-if="errors.phone"
+                                    class="text-red mt-1"
+                                >
                                     {{ errors.phone[0] }}
                                 </div>
                             </div>
@@ -227,7 +179,4 @@ document.addEventListener("click", handleClickOutside);
     <SiteFooter />
 </template>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>

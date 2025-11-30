@@ -19,7 +19,7 @@ class LoginController extends Controller
     //login
     public function login(LoginRequest $request){
         try{
-            if(Auth::attempt($request->only('phone', 'password'))){
+            if(Auth::attempt($request->only('phone', 'password','country_code'))){
                 return redirect()->back()->with(['status' => true, 'message' => 'Login successful']);
             }
             return redirect()->back()->with(['status' => false, 'message' => 'Invalid credentials']);

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->index();
             $table->string('email')->unique();
             $table->string('phone')->unique();
+            $table->string('country_code');
             $table->string('password');
             $table->enum('user_type', ['admin', 'user'])->default('user');
             $table->timestamps();

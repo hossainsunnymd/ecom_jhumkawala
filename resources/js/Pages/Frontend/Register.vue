@@ -3,7 +3,7 @@ import SiteFooter from "../../Components/Frontend/SiteFooter.vue";
 import SiteHeader from "../../Components/Frontend/SiteHeader.vue";
 import { useToast } from "vue-toast-notification";
 
-import { computed } from "vue";
+import { computed ,onMounted,ref} from "vue";
 import { usePage,useForm,router } from "@inertiajs/vue3";
 const page = usePage();
 
@@ -13,11 +13,13 @@ const toast = useToast({
 });
 
 const errors = computed(() => page.props.flash.errors || {});
+const countries=ref([]);
 
 const form = useForm({
     name: "",
     email: "",
     phone: "",
+    country_code: "+880",
     password: "",
     password_confirmation: "",
 });
@@ -35,6 +37,15 @@ const submit=()=>{
         },
     });
 }
+
+onMounted(async () => {
+    try {
+        const res = await axios.get("api/frontend/countries");
+        countries.value = res.data.data;
+    } catch (err) {
+        console.error("Failed to fetch countries:", err);
+    }
+});
 
 
 </script>
@@ -96,19 +107,44 @@ const submit=()=>{
 
                             <div v-if="errors.email" class="pb-3 text-red">{{ errors.email[0] }}</div>
 
-                            <div class="form-floating mb-3">
-                                <input
-                                    v-model="form.phone"
-                                    id="mobile"
-                                    type="text"
-                                    class="form-control form-control_gray"
-                                    name="mobile"
-                                    autocomplete="mobile"
-                                />
-                                <label for="mobile">Mobile *</label>
-                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mobile *</label>
 
-                            <div v-if="errors.phone" class="pb-3 text-red">{{ errors.phone[0] }}</div>
+                                <div class="input-group">
+                                    <!-- Country Select -->
+                                    <select
+                                        v-model="form.country_code"
+                                        class="form-select"
+                                        style="
+                                            max-width: 130px;
+                                            font-size: 14px;
+                                        "
+                                    >
+                                        <option
+                                            v-for="c in countries"
+                                            :key="c.id"
+                                            :value="'+' + c.phonecode"
+                                        >
+                                            {{ c.emoji }} +{{ c.phonecode }}
+                                        </option>
+                                    </select>
+
+                                    <!-- Phone Input -->
+                                    <input
+                                        v-model="form.phone"
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Enter phone number"
+                                    />
+                                </div>
+
+                                <div
+                                    v-if="errors.phone"
+                                    class="text-danger mt-1"
+                                >
+                                    {{ errors.phone[0] }}
+                                </div>
+                            </div>
 
                             <div class="form-floating mb-3">
                                 <input
